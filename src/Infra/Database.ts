@@ -1,17 +1,9 @@
 import mysql, { OkPacket } from "mysql";
-import dotenv from "dotenv";
-dotenv.config();
-import { Tile } from "../Tile/Tile";
+import config from "../../config/index";
 
 export default class Database {
   connect = () => {
-    return mysql.createConnection({
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      user: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      multipleStatements: true,
-    });
+    return mysql.createConnection(config.sqlConnection);
   };
 
   query = async <T>(
@@ -28,18 +20,6 @@ export default class Database {
         connection.destroy();
         resolve(result);
       });
-    });
-  };
-  migrate = async (query: string) => {
-    const connection = this.connect();
-    return connection.query(query, (err, result) => {
-      if (err) {
-        console.error(err);
-      }
-      if (result) {
-        console.log("Migration criada com sucesso!");
-        connection.destroy();
-      }
     });
   };
   insertQuery = async (

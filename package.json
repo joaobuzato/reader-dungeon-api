@@ -2,12 +2,13 @@
   "name": "reader_dungeon_api",
   "version": "1.0.0",
   "description": "API que servirá de base para a construção da door-game",
-  "main": "dist/index.js",
+  "main": "dist/src/app.js",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "prestart": "npm run build",
-    "start": "nodemon dist/app.js",
-    "migrate": "npm run build && node dist/migrate.js",
+    "start": "nodemon dist/src/app.js",
+    "migrate": "tsx src/migrate.ts",
     "build": "tsc --build",
     "prepare": "husky install"
   },
@@ -24,6 +25,7 @@
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.22",
+    "quick-migrate-lib": "^0.0.14",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   },
@@ -43,6 +45,7 @@
     "sinon": "^15.1.0",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.7.1"
   }
 }
