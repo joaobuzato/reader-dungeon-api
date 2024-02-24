@@ -1,35 +1,45 @@
-import mysql, { Connection, OkPacket } from "mysql";
+import mysql, { OkPacket } from "mysql";
 import dotenv from "dotenv";
-import { Tile } from "../Tile/Tile";
 dotenv.config();
+import { Tile } from "../Tile/Tile";
 
 export default class Database {
-  connection: Connection;
-  constructor() {
-    this.connection = this.connect();
-  }
   connect = () => {
     return mysql.createConnection({
-      database: process.env.DB_NAME,
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
+      multipleStatements: true,
     });
   };
 
-  query = async (
+  query = async <T>(
     query: string,
     options: Array<string | number> = []
-  ): Promise<Tile[]> => {
+  ): Promise<T[]> => {
+    const connection = this.connect();
     return new Promise((resolve, reject) => {
-      this.connection.query(query, options, (err, result) => {
+      connection.query(query, options, (err, result) => {
         if (err) {
-          console.log(err);
+          connection.destroy();
           reject(err);
         }
+        connection.destroy();
         resolve(result);
       });
+    });
+  };
+  migrate = async (query: string) => {
+    const connection = this.connect();
+    return connection.query(query, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+      if (result) {
+        console.log("Migration criada com sucesso!");
+        connection.destroy();
+      }
     });
   };
   insertQuery = async (
@@ -37,7 +47,7 @@ export default class Database {
     options: Array<string | number> = []
   ): Promise<OkPacket> => {
     return new Promise((resolve, reject) => {
-      this.connection.query(query, options, (err, result) => {
+      this.connect().query(query, options, (err, result) => {
         if (err) {
           console.log(err);
           reject(err);

@@ -1,8 +1,8 @@
+import { Action } from "../Action/Action";
 export type Tile = {
+  id?: number;
   title: string;
   text: string;
   treasures: number;
   actions: Array<Action>;
 };
-
-type Action = { name: string; quantity: number };

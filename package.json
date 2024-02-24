@@ -1,5 +1,5 @@
 {
-  "name": "door-game-api",
+  "name": "reader_dungeon_api",
   "version": "1.0.0",
   "description": "API que servirá de base para a construção da door-game",
   "main": "dist/index.js",
@@ -7,6 +7,7 @@
     "test": "jest",
     "prestart": "npm run build",
     "start": "nodemon dist/app.js",
+    "migrate": "npm run build && node dist/migrate.js",
     "build": "tsc --build",
     "prepare": "husky install"
   },
@@ -15,6 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "db-migrate": "^0.11.14",
+    "db-migrate-mysql": "^2.3.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jest-mock-extended": "^3.0.4",
