@@ -12,15 +12,18 @@ export default class TileRepository {
     const result = await this.database.query<Tile>(
       "SELECT * FROM reader_dungeon.Tile"
     );
-    const actionsPromises = result.map(async (tile) => {
-      const actions = await new ActionRepository(this.database).getAllByTileId(
-        tile.id ?? 0
-      );
-      tile.actions = actions;
-      return tile;
-    });
-    const tilesWithActions = await Promise.all(actionsPromises);
+    return await Promise.all(
+      result.map(async (tile) => {
+        return await this.populateActions(tile);
+      })
+    );
+  }
 
-    return tilesWithActions;
+  async populateActions(tile: Tile): Promise<Tile> {
+    const actions = await new ActionRepository(this.database).getAllByTileId(
+      tile.id ?? 0
+    );
+    tile.actions = actions;
+    return tile;
   }
 }
