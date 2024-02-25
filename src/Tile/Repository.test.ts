@@ -3,9 +3,13 @@ import Database from "../Infra/Database";
 import TileRepository from "./Repository";
 import { mock } from "jest-mock-extended";
 
-jest.mock("../Action/Repository");
+import ActionRepository from "../Action/Repository";
 
 describe("RoomRepository", () => {
+  const getAllByTileIdSpy = jest.spyOn(
+    ActionRepository.prototype,
+    "getAllByTileId"
+  );
   describe("getAll", () => {
     const expectedReturn = [
       {
@@ -22,6 +26,7 @@ describe("RoomRepository", () => {
     beforeEach(() => {
       databaseMock.query.mockClear();
       databaseMock.insertQuery.mockClear();
+      getAllByTileIdSpy.mockClear();
     });
     test("should getAll correctly", async () => {
       databaseMock.query.mockResolvedValue(expectedReturn);
@@ -32,6 +37,7 @@ describe("RoomRepository", () => {
       expect(databaseMock.query).toHaveBeenCalledWith(
         "SELECT * FROM reader_dungeon.Tile"
       );
+      expect(getAllByTileIdSpy).toHaveBeenCalledWith(1);
     });
     test("should reject if promise is rejected", async () => {
       databaseMock.query.mockRejectedValue([]);
