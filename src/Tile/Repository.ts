@@ -21,8 +21,6 @@ export default class TileRepository {
     });
     const tilesWithActions = await Promise.all(actionsPromises);
 
-    console.log(tilesWithActions);
-
     return tilesWithActions;
   }
 }

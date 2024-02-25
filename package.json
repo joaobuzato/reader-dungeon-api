@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "API que servirá de base para a construção da door-game",
   "main": "dist/src/app.js",
-  "type": "module",
   "scripts": {
     "test": "jest",
     "prestart": "npm run build",
@@ -13,7 +12,7 @@
     "prepare": "husky install"
   },
   "keywords": [],
-  "author": "",
+  "author": "João Pedro Buzato",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
