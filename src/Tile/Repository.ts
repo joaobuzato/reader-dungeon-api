@@ -22,6 +22,22 @@ export default class TileRepository {
       })
     );
   }
+  async getById(id: number): Promise<Tile> {
+    const result = await this.database.query<Tile>(
+      `SELECT * FROM reader_dungeon.Tile WHERE id = ${id}`
+    );
+    if (result.length === 0) {
+      throw new Error("Tile not found");
+    }
+    return await this.populateActions(result[0]);
+  }
+
+  async create(tile: Tile): Promise<Tile> {
+    const result = await this.database.query<Tile>(
+      `INSERT INTO reader_dungeon.Tile (title, text, treasures) VALUES ('${tile.title}', '${tile.text}', '${tile.treasures}');`
+    );
+    return result[0];
+  }
 
   async populateActions(tile: Tile): Promise<Tile> {
     const actions = await new ActionRepository(this.database).getAllByTileId(
