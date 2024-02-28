@@ -5,7 +5,7 @@ export default class TileService {
   constructor(repository: TileRepository) {
     this.repository = repository;
   }
-  async getAll() {
-    return await this.repository.getAll();
+  async getAll({ onlyIds = false }) {
+    return await this.repository.getAll({ onlyIds });
   }
 }

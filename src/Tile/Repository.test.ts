@@ -31,7 +31,7 @@ describe("RoomRepository", () => {
     test("should getAll correctly", async () => {
       databaseMock.query.mockResolvedValue(expectedReturn);
 
-      const result = await repository.getAll();
+      const result = await repository.getAll({ onlyIds: false });
 
       expect(result).toEqual(expectedReturn);
       expect(databaseMock.query).toHaveBeenCalledWith(
@@ -39,12 +39,25 @@ describe("RoomRepository", () => {
       );
       expect(getAllByTileIdSpy).toHaveBeenCalledWith(1);
     });
-    test("should reject if promise is rejected", async () => {
-      databaseMock.query.mockRejectedValue([]);
+    test("should getAll correctly", async () => {
+      databaseMock.query.mockResolvedValue(expectedReturn);
 
-      await expect(repository.getAll()).rejects.toStrictEqual([]);
+      const result = await repository.getAll({ onlyIds: false });
+
+      expect(result).toEqual(expectedReturn);
       expect(databaseMock.query).toHaveBeenCalledWith(
         "SELECT * FROM reader_dungeon.Tile"
+      );
+      expect(getAllByTileIdSpy).toHaveBeenCalledWith(1);
+    });
+    test("should call with only Ids", async () => {
+      databaseMock.query.mockResolvedValue([]);
+
+      await expect(repository.getAll({ onlyIds: true })).resolves.toStrictEqual(
+        []
+      );
+      expect(databaseMock.query).toHaveBeenCalledWith(
+        "SELECT id FROM reader_dungeon.Tile"
       );
     });
   });

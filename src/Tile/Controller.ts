@@ -9,7 +9,7 @@ export default class TileController {
     const repository = new TileRepository(database);
     this.service = new TileService(repository);
   }
-  async getAll() {
-    return await this.service.getAll();
+  async getAll({ onlyIds = false }) {
+    return await this.service.getAll({ onlyIds });
   }
 }
