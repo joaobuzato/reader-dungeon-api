@@ -8,8 +8,7 @@
     "prestart": "npm run build",
     "start": "nodemon dist/src/app.js",
     "migrate": "tsx src/migrate.ts",
-    "build": "tsc --build",
-    "prepare": "husky install"
+    "build": "tsc --build eslint src --fix"
   },
   "keywords": [],
   "author": "João Pedro Buzato",
@@ -23,8 +22,9 @@
     "jest-mock-extended": "^3.0.4",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
+    "mysql2": "^3.9.2",
     "nodemon": "^2.0.22",
-    "quick-migrate-lib": "^0.0.14",
+    "quick-migrate-lib": "^0.0.18",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   },
@@ -39,7 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "eslint": "^8.42.0",
-    "husky": "^8.0.3",
     "jest": "^29.5.0",
     "sinon": "^15.1.0",
     "supertest": "^6.3.3",

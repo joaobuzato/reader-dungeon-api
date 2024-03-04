@@ -1,4 +1,4 @@
-import mysql, { OkPacket } from "mysql";
+import mysql, { ResultSetHeader } from "mysql2/promise";
 import config from "../../config/index";
 
 export default class Database {
@@ -12,27 +12,35 @@ export default class Database {
   ): Promise<T[]> => {
     const connection = this.connect();
     return new Promise((resolve, reject) => {
-      connection.query(query, options, (err, result) => {
-        if (err) {
-          connection.destroy();
-          reject(err);
-        }
-        connection.destroy();
-        resolve(result);
+      connection.then((connection) => {
+        connection
+          .query(query, options)
+          .then(([rows]) => {
+            resolve(rows as T[]);
+          })
+          .catch((err: string) => {
+            console.log(err);
+            reject(err);
+          });
       });
     });
   };
   insertQuery = async (
     query: string,
     options: Array<string | number> = []
-  ): Promise<OkPacket> => {
+  ): Promise<ResultSetHeader> => {
+    const connection = this.connect();
     return new Promise((resolve, reject) => {
-      this.connect().query(query, options, (err, result) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        }
-        resolve(result);
+      connection.then((connection) => {
+        connection
+          .query(query, options)
+          .then(([rows]) => {
+            resolve(rows as ResultSetHeader);
+          })
+          .catch((err: string) => {
+            console.log(err);
+            reject(err);
+          });
       });
     });
   };
