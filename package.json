@@ -8,7 +8,7 @@
     "prestart": "npm run build",
     "start": "nodemon dist/src/app.js",
     "migrate": "tsx src/migrate.ts",
-    "build": "tsc --build eslint src --fix"
+    "build": "tsc --build"
   },
   "keywords": [],
   "author": "João Pedro Buzato",
